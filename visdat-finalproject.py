@@ -239,42 +239,6 @@ tabs = Tabs(tabs=[atkdef_panel, hpatk_panel, hpdef_panel])
 show(tabs)
 
 
-# In[28]:
-
-
-# Define the callback function: update_plot
-def update_plot(attr, old, new):
-    # set the `gi` name to `slider.value` and `source.data = new_data`
-    gi = slider.value
-    
-    # Label axes of plot
-    plot.xaxis.axis_label = f
-    plot.yaxis.axis_label = m
-    
-    # Isolate the data for the gender choice
-    female = df[df['Sex'] == 'Female']
-    male = df[df['Sex'] == 'Male']
-    
-    # Add title to figure: plot.title.text
-    fig_1.title.text = 'Gapminder data for %d' % gi
-
-
-# In[30]:
-
-
-# Make a slider object: slider
-slider = Slider(start=0, end=1000, step=1, value=0, title='Year')
-slider.on_change('value',update_plot)
-
-
-# In[34]:
-
-
-# Create layout and add to current document
-layout = row(widgetbox(slider), fig_1)
-curdoc().add_root(layout)
-
-
 # In[ ]:
 
 
