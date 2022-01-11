@@ -5,6 +5,10 @@
 
 # ### MK Visualisasi Data Semester Ganjil 2021/2022
 
+# #### Anggota: 
+# 1. Hasna Hashifa - 
+# 2. Dewi Annisa'ul Maghfiroh - 1301174093
+# 3. Andy -
 
 # #### Instruksi
 # Buatlah aplikasi berbasis web yang menampilkan visualisasi interaktif terkait topik tertentu.
@@ -221,7 +225,7 @@ show(fig_3)
 
 
 # Create two panels, one for each conference
-atkdef_panel = Panel(child= fig_1, title='Perbandinga ATK & DEF')
+atkdef_panel = Panel(child= fig_1, title='Perbandingan ATK & DEF')
 hpatk_panel = Panel(child= fig_2, title='Perbandingan HP & ATK')
 hpdef_panel = Panel(child= fig_3, title='Perbandingan HP & DEF')
 
@@ -230,6 +234,37 @@ tabs = Tabs(tabs=[atkdef_panel, hpatk_panel, hpdef_panel])
 
 # Show the tabbed layout
 show(tabs)
+
+
+# In[28]:
+
+
+# Define the callback function: update_plot
+def update_plot(attr, old, new):
+    # set the `gi` name to `slider.value` and `source.data = new_data`
+    gi = slider.value
+    # Isolate the data for the gender choice
+    female = df[df['Sex'] == 'Female']
+    male = df[df['Sex'] == 'Male']
+    
+    # Add title to figure: plot.title.text
+    fig_1.title.text = 'Gapminder data for %d' % gi
+
+
+# In[30]:
+
+
+# Make a slider object: slider
+slider = Slider(start=0, end=1000, step=1, value=0, title='Year')
+slider.on_change('value',update_plot)
+
+
+# In[34]:
+
+
+# Create layout and add to current document
+layout = row(widgetbox(slider), tabs)
+curdoc().add_root(layout)
 
 
 # In[ ]:
