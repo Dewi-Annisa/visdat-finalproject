@@ -5,18 +5,13 @@
 
 # ### MK Visualisasi Data Semester Ganjil 2021/2022
 
-# #### Anggota: 
-# 1. Hasna Hashifa - 
-# 2. Dewi Annisa'ul Maghfiroh - 1301174093
-# 3. Andy -
-
 # #### Instruksi
 # Buatlah aplikasi berbasis web yang menampilkan visualisasi interaktif terkait topik tertentu.
 # Visualisasi yang ditampilkan harus memiliki sedikitnya 2 fitur interaktif, seperti sidebar,
 # dropdown, dll. Visualisasi interaktif dibuat dengan menggunakan module bokeh dan dideploy pada platform Heroku. Pada dasarnya tidak ada batasan terkait topik yang bisa dipilih
 # untuk tugas final project ini.
 
-# In[33]:
+# In[1]:
 
 
 # Import library
@@ -102,7 +97,7 @@ duplicateRow = df[df.duplicated()]
 duplicateRow
 
 
-# In[19]:
+# In[11]:
 
 
 # The figure will be right in my Jupyter Notebook
@@ -117,7 +112,7 @@ female_cds = ColumnDataSource(female)
 male_cds = ColumnDataSource(male)
 
 
-# In[20]:
+# In[13]:
 
 
 # Create and configure the figure
@@ -151,7 +146,7 @@ fig_1.add_tools(HoverTool(tooltips=tooltips))
 show(fig_1)
 
 
-# In[21]:
+# In[14]:
 
 
 # Create and configure the figure
@@ -186,7 +181,7 @@ fig_2.add_tools(HoverTool(tooltips=tooltips))
 show(fig_2)
 
 
-# In[22]:
+# In[15]:
 
 
 # Create and configure the figure
@@ -221,11 +216,11 @@ fig_3.add_tools(HoverTool(tooltips=tooltips))
 show(fig_3)
 
 
-# In[25]:
+# In[16]:
 
 
 # Create two panels, one for each conference
-atkdef_panel = Panel(child= fig_1, title='Perbandingan ATK & DEF')
+atkdef_panel = Panel(child= fig_1, title='Perbandinga ATK & DEF')
 hpatk_panel = Panel(child= fig_2, title='Perbandingan HP & ATK')
 hpdef_panel = Panel(child= fig_3, title='Perbandingan HP & DEF')
 
@@ -236,14 +231,15 @@ tabs = Tabs(tabs=[atkdef_panel, hpatk_panel, hpdef_panel])
 show(tabs)
 
 
-# In[28]:
+# In[58]:
 
 
 # Define the callback function: update_plot
 def update_plot(attr, old, new):
     # set the `gi` name to `slider.value` and `source.data = new_data`
     gi = slider.value
-    # Isolate the data for the gender choice
+    x = x_select.value
+    y = y_select.value
     female = df[df['Sex'] == 'Female']
     male = df[df['Sex'] == 'Male']
     
@@ -251,7 +247,7 @@ def update_plot(attr, old, new):
     fig_1.title.text = 'Gapminder data for %d' % gi
 
 
-# In[30]:
+# In[59]:
 
 
 # Make a slider object: slider
@@ -259,7 +255,7 @@ slider = Slider(start=0, end=1000, step=1, value=0, title='Year')
 slider.on_change('value',update_plot)
 
 
-# In[34]:
+# In[60]:
 
 
 # Create layout and add to current document
@@ -267,38 +263,40 @@ layout = row(widgetbox(slider), tabs)
 curdoc().add_root(layout)
 
 
+# In[61]:
+
+
+# Make dropdown menu for x and y axis
+# Create a dropdown Select widget for the x data: x_select
+x_select = Select(
+    options=['ATK', 'HP', 'DF'],
+    value='ATK',
+    title='x-axis data'
+)
+
+# Attach the update_plot callback to the 'value' property of x_select
+x_select.on_change('value', update_plot)
+
+# Create a dropdown Select widget for the y data: y_select
+y_select = Select(
+    options=['ATK', 'HP', 'DF'],
+    value='HP',
+    title='y-axis data'
+)
+# Attach the update_plot callback to the 'value' property of y_select
+y_select.on_change('value', update_plot)
+
+
+# In[55]:
+
+
+# Create layout and add to current document
+layout = row(widgetbox(slider, x_select, y_select), fig_1)
+show(layout)
+
+
 # In[ ]:
 
 
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-bokeh serve --show visdat-finalproject.py
+bokeh serve --show visdat-finalproject
 
