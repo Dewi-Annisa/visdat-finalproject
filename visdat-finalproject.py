@@ -5,10 +5,6 @@
 
 # ### MK Visualisasi Data Semester Ganjil 2021/2022
 
-# #### Anggota: 
-# 1. Hasna Hashifa - 
-# 2. Dewi Annisa'ul Maghfiroh - 1301174093
-# 3. Andy -
 
 # #### Instruksi
 # Buatlah aplikasi berbasis web yang menampilkan visualisasi interaktif terkait topik tertentu.
