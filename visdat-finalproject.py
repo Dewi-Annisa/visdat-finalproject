@@ -300,5 +300,5 @@ curdoc().add_root(layout)
 # In[ ]:
 
 
-# bokeh serve --show myapp.py
+bokeh serve --show visdat-finalproject.py
 
