@@ -299,4 +299,4 @@ show(layout)
 
 
 bokeh serve --show visdat-finalproject.py
-bokeh logs --tail
+bokeh logs --tail --app visdat-finalproject
