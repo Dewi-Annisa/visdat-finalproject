@@ -1,2 +1,2 @@
-git push heroku master
------> Python app detected
+$ git push heroku master
+# -----> Python app detected
