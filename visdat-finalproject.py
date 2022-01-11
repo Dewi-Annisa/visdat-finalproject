@@ -128,9 +128,6 @@ fig_1.circle('ATK', 'DEF',
 fig_1.circle('ATK', 'DEF', 
          color='#006BB6', legend_label='Male', 
          source=male_cds)
-fig_1.circle('ATK', 'DEF', 
-         color='#4CD95A', legend_label='Player Choice', 
-         source=choice_cds)
 
 
 # Move the legend to the upper left corner
