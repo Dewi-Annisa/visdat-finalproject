@@ -298,5 +298,5 @@ show(layout)
 # In[ ]:
 
 
-bokeh serve --show visdat-finalproject
+bokeh serve --show visdat-finalproject.py
 
