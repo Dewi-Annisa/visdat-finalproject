@@ -22,11 +22,9 @@ import seaborn as sns
 # Bokeh libraries
 from bokeh.io import curdoc, output_notebook
 from bokeh.plotting import figure, show
-from bokeh.models import HoverTool, ColumnDataSource
-from bokeh.models import CategoricalColorMapper
-from bokeh.palettes import Spectral6
+from bokeh.models import HoverTool, ColumnDataSource, Slider, Select
+from bokeh.palettes import Greys256, Inferno256, Magma256, Plasma256, Viridis256, Cividis256, Turbo256
 from bokeh.layouts import widgetbox, row, gridplot
-from bokeh.models import Slider, Select
 from bokeh.models.widgets import Tabs, Panel
 
 
@@ -64,7 +62,7 @@ df2
 
 
 # Removing NaN columns & merge 2 datasets into 1
-df1 = df1.drop(['Icon', 'Ascension Stat', 'Ascension Stat Value'], axis = 1)
+df1 = df1.drop(['Icon'], axis = 1)
 df2 = df2.drop(['Icon','Rarity'], axis = 1)
 df3 = df1.merge(df2)
 
@@ -87,6 +85,7 @@ df3.isnull().sum()
 
 
 df = df3.dropna()
+df.rename(columns={'Ascension Stat': 'AscensionStat', 'Ascension Stat Value': 'ASV'}, inplace=True)
 df.head()
 
 
@@ -128,15 +127,20 @@ fig_1.circle('ATK', 'DEF',
          color='#006BB6', legend_label='Male', 
          source=male_cds)
 
-
 # Move the legend to the upper left corner
 fig_1.legend.location = 'top_left'
+
+#Hide legend
+fig_1.legend.click_policy="hide"
+
 
 # Format the tooltip
 tooltips = [
             ('Nama Karakter','@Name'),('Nation','@Nation'),
             (' Element', '@Element'),
             ( 'Weapon', '@Weapon'),
+            ('Ascension Stat','@AscensionStat'),
+            ('Ascension Stat Value','@ASV'),
            ]
 
 # Add the HoverTool to the figure
@@ -165,13 +169,16 @@ fig_2.circle('HP', 'ATK',
 # Move the legend to the upper left corner
 fig_2.legend.location = 'top_left'
 
-
+#Hide legend
+fig_2.legend.click_policy="hide"
 
 # Format the tooltip
 tooltips = [
             ('Nama Karakter','@Name'),('Nation','@Nation'),
             (' Element', '@Element'),
             ( 'Weapon', '@Weapon'),
+            ('Ascension Stat','@AscensionStat'),
+            ('Ascension Stat Value','@ASV'),
            ]
 
 # Add the HoverTool to the figure
@@ -179,7 +186,6 @@ fig_2.add_tools(HoverTool(tooltips=tooltips))
 
 # Visualize
 show(fig_2)
-
 
 # In[15]:
 
@@ -200,13 +206,16 @@ fig_3.circle('HP', 'DEF',
 # Move the legend to the upper left corner
 fig_3.legend.location = 'top_left'
 
-
+#Hide legend
+fig_3.legend.click_policy="hide"
 
 # Format the tooltip
 tooltips = [
             ('Nama Karakter','@Name'),('Nation','@Nation'),
             (' Element', '@Element'),
             ( 'Weapon', '@Weapon'),
+            ('Ascension Stat','@AscensionStat'),
+            ('Ascension Stat Value','@ASV'),
            ]
 
 # Add the HoverTool to the figure
@@ -230,73 +239,4 @@ tabs = Tabs(tabs=[atkdef_panel, hpatk_panel, hpdef_panel])
 # Show the tabbed layout
 show(tabs)
 
-
-# In[58]:
-
-
-# Define the callback function: update_plot
-def update_plot(attr, old, new):
-    # set the `gi` name to `slider.value` and `source.data = new_data`
-    gi = slider.value
-    x = x_select.value
-    y = y_select.value
-    female = df[df['Sex'] == 'Female']
-    male = df[df['Sex'] == 'Male']
-    
-    # Add title to figure: plot.title.text
-    fig_1.title.text = 'Gapminder data for %d' % gi
-
-
-# In[59]:
-
-
-# Make a slider object: slider
-slider = Slider(start=0, end=1000, step=1, value=0, title='Year')
-slider.on_change('value',update_plot)
-
-
-# In[60]:
-
-
-# Create layout and add to current document
-layout = row(widgetbox(slider), tabs)
-curdoc().add_root(layout)
-
-
-# In[61]:
-
-
-# Make dropdown menu for x and y axis
-# Create a dropdown Select widget for the x data: x_select
-x_select = Select(
-    options=['ATK', 'HP', 'DF'],
-    value='ATK',
-    title='x-axis data'
-)
-
-# Attach the update_plot callback to the 'value' property of x_select
-x_select.on_change('value', update_plot)
-
-# Create a dropdown Select widget for the y data: y_select
-y_select = Select(
-    options=['ATK', 'HP', 'DF'],
-    value='HP',
-    title='y-axis data'
-)
-# Attach the update_plot callback to the 'value' property of y_select
-y_select.on_change('value', update_plot)
-
-
-# In[55]:
-
-
-# Create layout and add to current document
-layout = row(widgetbox(slider, x_select, y_select), fig_1)
-show(layout)
-
-
-# In[ ]:
-
-
 bokeh serve --show visdat-finalproject.py
-bokeh logs --tail --app visdat-finalproject.py
