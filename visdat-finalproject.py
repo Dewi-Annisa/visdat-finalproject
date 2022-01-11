@@ -299,4 +299,4 @@ show(layout)
 
 
 bokeh serve --show visdat-finalproject.py
-heroku logs --tail
+heroku logs --source app --tail
